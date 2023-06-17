@@ -1,11 +1,8 @@
-import { pathToFileURL } from "url";
-import path from "path";
 import * as page from './routes/index.js'
 import * as compoentsPage from './routes/components/index.js'
 import * as dbPage from './routes/db/index.js'
 import * as routerPage from './routes/router/index.js'
 import * as pluginPage from './routes/plugin/index.js'
-import { connect } from "@ulibs/db";
 
 
 function onStart(ctx){
@@ -19,8 +16,28 @@ function onStart(ctx){
 function onInstall(ctx){
     console.log('installing docs plugin')
     //create tables
-    const db = connect({filename: 'text-db'})
-    db.createTable(tableName, columns)
+    
+    ctx.db.createTable('docs_pages', 
+        {
+            title: 'string|required',
+            subTitle: 'docs_subTitle[]'
+        } 
+    )
+    ctx.db.createTable('docs_subTitles', 
+        {
+           title: 'string|required',
+           page: 'docs_pages',
+           example: 'docs_examples[]'
+        }
+    )
+    ctx.db.createTable('docs_examples', 
+        {
+           title: 'string',
+           description: 'text',
+           code: 'text',
+           subTitle: 'docs_subTitles'
+        }
+    )
 }
 function onRemove(ctx){
     console.log('removing docs plugin')

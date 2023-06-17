@@ -1,25 +1,24 @@
-// import pm from '../../../pluginManager.js'
+import {connect}  from '@ulibs/db'
 import { View, Card } from '@ulibs/components'
+const db = connect({filename: 'text-db'})
 import {tag} from '@ulibs/router'
 
-// const getPages= async() =>{
-//     const ctx = pm.getContext()
-//     const DocsPages = ctx.db.getModel('docs_pages')
-//     const pages = await DocsPages.query(
-//         {
-//             select: {
-//                 title: true,
-//             }
-//         }
-//     )
-//     return pages
-// }
 
-export default function({}){
-    return 'something'
+// db.createTable('docs_pages', {
+//     page: 'components'
+// })
+const page = db.getModel('docs_pages')
+console.log('page: ', await page.get({}))
+export function load(){
+
 }
 
-export  const layout = async  (content)=>{
+export default function({}){
+    return View(['somethind'
+    ])
+}
+
+export const layout = (content)=>{
     return View(
         {
             htmlHead:
@@ -52,7 +51,6 @@ export  const layout = async  (content)=>{
                             tag('a', {href: '/docs/db' ,style: 'line-type: node'}, 'DB ORM'),
                             tag('a', {href: '/docs/router' ,style: 'line-type: node'}, 'Router'),
                             tag('a', {href: '/docs/plugin' ,style: 'line-type: node'}, 'Plugin'),
-                            
                         ]
                     )
 

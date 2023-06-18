@@ -1,22 +1,12 @@
-// import pm from '../../../pluginManager.js'
+import pm from '../../../pluginManager.js'
 import { View, Card } from '@ulibs/components'
 import {tag} from '@ulibs/router'
 
-// const getPages= async() =>{
-//     const ctx = pm.getContext()
-//     const DocsPages = ctx.db.getModel('docs_pages')
-//     const pages = await DocsPages.query(
-//         {
-//             select: {
-//                 title: true,
-//             }
-//         }
-//     )
-//     return pages
-// }
+
+
 
 export default function({}){
-    return 'something'
+    return 'this is home page of codos to see the documentation of each section please click to the liks in the header'
 }
 
 export  const layout = async  (content)=>{
@@ -48,11 +38,9 @@ export  const layout = async  (content)=>{
                             style: 'display: flex ; gap : 20px;align-items: center; padding-right: 1rem'
                         },
                         [
-                            tag('a', {href: '/docs/components' ,style: 'line-type: node'}, 'Components'),
-                            tag('a', {href: '/docs/db' ,style: 'line-type: node'}, 'DB ORM'),
-                            tag('a', {href: '/docs/router' ,style: 'line-type: node'}, 'Router'),
-                            tag('a', {href: '/docs/plugin' ,style: 'line-type: node'}, 'Plugin'),
-                            
+                            ...await getPages().map(page=>{
+                                return tag('a', {href: `/docs/${page.title}` ,style: 'line-type: node'}, page.title)
+                            }),
                         ]
                     )
 
@@ -65,4 +53,17 @@ export  const layout = async  (content)=>{
             )
         ]
         )
+}
+
+const getPages= async() =>{
+    const ctx = pm.getContext()
+    const DocsPages = ctx.db.getModel('docs_pages')
+    const pages = await DocsPages.query(
+        {
+            select: {
+                title: true,
+            }
+        }
+    )
+    return pages
 }

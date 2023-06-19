@@ -13,16 +13,15 @@ app.startServer('localhost', 5000, ()=>{
 pm.getContext()['router'] = app
 pm.getContext()['db'] = db
 
-
-
 //loads the docs and todos plugins that are inside plugins directory
 await pm.loadPlugins('./plugins')
 
-await pm.install('docs', import('./plugins/docs/index.js'))
+// await pm.install('docs')
 // pm.remove('docs')
 
 // pm.install('todos', import('./plugins/todos/index.js'))
 // await pm.enable('docs')
+// await pm.enable('docs')
+
 await pm.start()
 
-// pm.remove('docs')

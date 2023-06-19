@@ -9,7 +9,21 @@ export default function({}){
     return 'this is home page of codos to see the documentation of each section please click to the liks in the header'
 }
 
-export  const layout = async  (content)=>{
+const getPages= async() =>{
+    const ctx = pm.getContext()
+    const DocsPages = ctx.db.getModel('docs_pages')
+    const pages = await DocsPages.query(
+        {
+            select: {
+                title: true,
+            }
+        }
+    )
+    return pages
+}
+
+export  const layout =  async (content)=>{
+    const pages  = await getPages()
     return View(
         {
             htmlHead:
@@ -38,9 +52,9 @@ export  const layout = async  (content)=>{
                             style: 'display: flex ; gap : 20px;align-items: center; padding-right: 1rem'
                         },
                         [
-                            ...await getPages().map(page=>{
-                                return tag('a', {href: `/docs/${page.title}` ,style: 'line-type: node'}, page.title)
-                            }),
+                            pages.data.map(page=>{
+                                    return tag('a', {href: `/docs/${page.title}` ,style: 'line-type: node'}, page.title)
+                            })
                         ]
                     )
 
@@ -55,15 +69,3 @@ export  const layout = async  (content)=>{
         )
 }
 
-const getPages= async() =>{
-    const ctx = pm.getContext()
-    const DocsPages = ctx.db.getModel('docs_pages')
-    const pages = await DocsPages.query(
-        {
-            select: {
-                title: true,
-            }
-        }
-    )
-    return pages
-}

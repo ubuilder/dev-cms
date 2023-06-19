@@ -1,37 +1,38 @@
 import { View, Card } from '@ulibs/components'
-import getContext from '../../../../pluginManager.js'
+import {tag} from '@ulibs/router'
+import pm from '../../../../pluginManager.js'
 
 
-export const load= async({req})=>{
-    const ctx = getContext()
+export async function load(req){
+    const ctx = pm.getContext()
     const Page = ctx.db.getModel('docs_subTitles')
     const subTitles = await Page.query(
         {
+            where: {
+                title: 'router:like'
+            },
             select: {
                 title: true
-            },
-            where: {
-                page: {
-                    title: 'router'
-                }
             }
+            
         }
     )
     req.subTitles = subTitles
 }
 
-export default function({req}){
+export function layout(content){
     return View(
-    [
-        //list of subtitles
-        tag('ul', {}, 
         [
-            //req.subTitles is set in load function
-            ...req.subTitles.map(title=>{
-                //each of the liks will load the examples at that title
-                return tag('li', {}, [tag('a', {href: `/docs/router/${title}`}, title)])
-            })
+            //list of subtitles
+            tag('ul', {}, 
+            [
+                // req.subTitles is set in load function
+                ...req.subTitles.data.map(({title})=>{
+                    //each of the liks will load the examples at that title
+                    return tag('li', {}, [tag('a', {href: `/docs/router/${title}`}, title)])
+                })
+            ]
+            )
         ]
-        )
-    ])
+    )
 }

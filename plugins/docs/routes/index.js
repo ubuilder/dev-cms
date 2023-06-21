@@ -1,6 +1,6 @@
 import pm from '../../../pluginManager.js'
 import { View, Card } from '@ulibs/components'
-import {tag} from '@ulibs/router'
+import {tag, renderHead} from '@ulibs/router'
 
 
 
@@ -22,16 +22,31 @@ const getPages= async() =>{
     return pages
 }
 
-export  const layout =  async (content)=>{
+export  const layout =  async ({content})=>{
     const pages  = await getPages()
     return View(
         {
+         
             htmlHead:
-            `<style>
-                body{padding: 0px; margin: 0px; background-color: rgba(200,200,200, 0.1)}
-                a{text-decoration: none}
-                a:hover{text-decoration: underline}
-            </style>`
+            `
+                <script>
+                    body{padding: 0px; margin: 0px; background-color: rgba(200,200,200, 0.1)}
+                    a{text-decoration: none}
+                    a:hover{text-decoration: underline}
+                </script>
+                <meta name = 'viewport' content = 'with = device-width, initial-scale=1.0'>
+                <link rel = 'stylesheet' href = 'https://unpkg.com/@ulibs/components@next/dist/styles.css'>
+                <scritp src ='https://unpkg.com/@ulibs/components@next/dist/ulibs.js'> </scritp>
+                <style>
+                li:hover{
+                    background-color: gray;
+                }
+                li{
+                    list-style-type: none;
+                    text-decoration: none;
+                }
+                </style>
+            `
         },
         [
             View(

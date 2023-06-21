@@ -3,7 +3,7 @@ import {tag} from '@ulibs/router'
 import pm from '../../../../pluginManager.js'
 
 
-export async function load(req){
+export async function load({req}){
     const ctx = pm.getContext()
     const Page = ctx.db.getModel('docs_subTitles')
     const subTitles = await Page.query(
@@ -20,7 +20,7 @@ export async function load(req){
     req.subTitles = subTitles
 }
 
-export default function(req){
+export default function({req}){
     return View(
         [
             //list of subtitles

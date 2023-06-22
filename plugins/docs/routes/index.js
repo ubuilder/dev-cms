@@ -69,7 +69,9 @@ export  const layout =  async ({content})=>{
                         [
                             pages.data.map(page=>{
                                     return tag('a', {href: `/docs/${page.title}` ,style: 'line-type: node'}, page.title)
-                            })
+                            }),
+                            tag('a', {href: `/admin/docs` ,style: 'line-type: node'}, 'Go to Admin')
+
                         ]
                     )
 

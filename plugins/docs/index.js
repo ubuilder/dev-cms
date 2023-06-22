@@ -11,6 +11,8 @@ import * as dbExaples from './routes/db/\[subTitle\]/index.js'
 //components
 import * as componentsPage from './routes/components/index.js'
 import * as componentsExaples from './routes/components/\[subTitle\]/index.js'
+//admin
+import * as adminPage from './adminRoutes/index.js'
 
 
 function onStart(ctx){
@@ -28,6 +30,10 @@ function onStart(ctx){
     //components
     ctx.router.addPage('/docs/components', componentsPage)
     ctx.router.addPage('/docs/components/[subTitle]', componentsExaples)
+    //admin
+    ctx.router.addPage('./admin/docs', adminPage)
+
+
     
 }
 async function onInstall(ctx){

@@ -1,7 +1,7 @@
-import { View, Card } from '@ulibs/components'
+import { View,Col, Row, Container, Card } from '@ulibs/components'
 import {tag} from '@ulibs/router'
 import pm from '../../../../pluginManager.js'
-
+import { Sidebar, SidebarItem } from '../../components/Sidebar.js'
 
 export async function load({req}){
     const ctx = pm.getContext()
@@ -19,19 +19,34 @@ export async function load({req}){
     )
     req.subTitles = subTitles
 }
-
-export default function({req}){
+export default function({req, res}){
+    return 'db page'
+    
+}
+export function layout({req, content}){
     return View(
         [
             //list of subtitles
-            tag('ul', {}, 
-            [
-                // req.subTitles is set in load function
-                ...req.subTitles.data.map(({title})=>{
-                    //each of the liks will load the examples at that title
-                    return tag('li', {}, [tag('a', {href: `/docs/db/${title}`}, title)])
-                })
-            ]
+            Row(
+                {},
+                [
+                    Col({col: 2}, [
+                        Sidebar(
+                            {}, 
+                            [
+                                ...req?.subTitles?.data?.map(({title})=>{
+                                    //each of the liks will load the examples at that title
+                                    return SidebarItem({}, [tag('a', {href: `/docs/db/${title}`}, title)])
+                                })
+                    
+                            ]
+                        )
+                    ]),
+                    Col({col: 10}, [
+                        content
+                    ])
+                    
+                ]
             )
         ]
     )

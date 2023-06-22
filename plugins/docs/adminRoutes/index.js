@@ -1,32 +1,52 @@
-import {connect}  from '@ulibs/db'
+import pm from '../../../pluginManager.js'
 import { View, Card } from '@ulibs/components'
-const db = connect({filename: 'text-db'})
-import {tag} from '@ulibs/router'
+import {tag, renderHead} from '@ulibs/router'
 
 
-// db.createTable('docs_pages', {
-//     page: 'components'
-// })
-const page = db.getModel('docs_pages')
-console.log('page: ', await page.get({}))
-export function load(){
 
-}
 
 export default function({}){
-    return View(['somethind'
-    ])
+    return 'admin page'
 }
 
-export const layout = (content)=>{
+const getPages= async() =>{
+    const ctx = pm.getContext()
+    const DocsPages = ctx.db.getModel('docs_pages')
+    const pages = await DocsPages.query(
+        {
+            select: {
+                title: true,
+            }
+        }
+    )
+    return pages
+}
+
+export  const layout =  async ({content})=>{
+    const pages  = await getPages()
     return View(
         {
+         
             htmlHead:
-            `<style>
-                body{padding: 0px; margin: 0px; background-color: rgba(200,200,200, 0.1)}
-                a{text-decoration: none}
-                a:hover{text-decoration: underline}
-            </style>`
+            `
+                <script>
+                    body{padding: 0px; margin: 0px; background-color: rgba(200,200,200, 0.1)}
+                    a{text-decoration: none}
+                    a:hover{text-decoration: underline}
+                </script>
+                <meta name = 'viewport' content = 'with = device-width, initial-scale=1.0'>
+                <link rel = 'stylesheet' href = 'https://unpkg.com/@ulibs/components@next/dist/styles.css'>
+                <scritp src ='https://unpkg.com/@ulibs/components@next/dist/ulibs.js'> </scritp>
+                <style>
+                li:hover{
+                    background-color: gray;
+                }
+                li{
+                    list-style-type: none;
+                    text-decoration: none;
+                }
+                </style>
+            `
         },
         [
             View(
@@ -47,10 +67,11 @@ export const layout = (content)=>{
                             style: 'display: flex ; gap : 20px;align-items: center; padding-right: 1rem'
                         },
                         [
-                            tag('a', {href: '/docs/components' ,style: 'line-type: node'}, 'Components'),
-                            tag('a', {href: '/docs/db' ,style: 'line-type: node'}, 'DB ORM'),
-                            tag('a', {href: '/docs/router' ,style: 'line-type: node'}, 'Router'),
-                            tag('a', {href: '/docs/plugin' ,style: 'line-type: node'}, 'Plugin'),
+                            pages.data.map(page=>{
+                                    return tag('a', {href: `/docs/${page.title}` ,style: 'line-type: node'}, page.title)
+                            }),
+                            tag('a', {href: `/admin/docs` ,style: 'line-type: node'}, 'Add New Page')
+
                         ]
                     )
 
@@ -64,3 +85,4 @@ export const layout = (content)=>{
         ]
         )
 }
+

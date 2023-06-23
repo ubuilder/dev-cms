@@ -13,8 +13,10 @@ import * as componentsPage from './routes/components/index.js'
 import * as componentsExaples from './routes/components/\[subTitle\]/index.js'
 //admin
 import * as adminPage from './adminRoutes/index.js'
+import * as docsPage from './adminRoutes/page/index.js'
 import * as docsSubTitles from './adminRoutes/subTitle/index.js'
 import * as docsExamples from './adminRoutes/example/index.js'
+import * as examplePage from './adminRoutes/example/example.js'
 
 
 function onStart(ctx){
@@ -33,9 +35,11 @@ function onStart(ctx){
     ctx.router.addPage('/docs/components', componentsPage)
     ctx.router.addPage('/docs/components/[subTitle]', componentsExaples)
     //admin
-    ctx.router.addPage('/admin/docs', adminPage)
+    ctx.router.addPage('/admin', adminPage)
+    ctx.router.addPage('/admin/docs', docsPage)
     ctx.router.addPage('/admin/docs/[page]', docsSubTitles)
     ctx.router.addPage('/admin/docs/subtitle/[subTitle]', docsExamples)
+    ctx.router.addPage('/admin/docs/example/[exampleId]', examplePage)
 
 
 

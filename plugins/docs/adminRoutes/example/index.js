@@ -5,11 +5,11 @@ import {tag} from '@ulibs/router'
 export const load= async(reqResObj) =>{
     console.log('pagge id : ', reqResObj.req.params.subtitle)
     const ctx = pm.getContext()
-    const ExamplePage = ctx.db.getModel('docs_Examples')
+    const ExamplePage = ctx.db.getModel('docs_examples')
     const examples = await ExamplePage.query(
         {
             where: {
-                docs_subtitles: {
+                subTitle: {
                     id: reqResObj.req.params.subtitle
                 }
         
@@ -50,10 +50,10 @@ export  default  function ({req, res, examples}){
                     examples.data.map((example)=>TableRow(
                         [
                             TableCell(example.title),
-                            TableCell([View({tag: 'a', component: 'button', color:'primary', href: '/admin/docs/subtitle/'+example.id},'View Examples')]),
+                            TableCell([View({tag: 'a', component: 'button', color:'primary', href: '/admin/docs/example/'+example.id},'View Details')]),
                             TableCell(
                                 [
-                                    Button('Edit'),
+                                    Button({link: true, href:'/admin/docs/example/'+example.id},'Edit'),
                                     Button({color: 'error'},'Delete'),
                                     
                                 ]

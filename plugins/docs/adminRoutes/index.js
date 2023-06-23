@@ -1,15 +1,9 @@
 import pm from '../../../pluginManager.js'
-import { View, Card } from '@ulibs/components'
-import {tag, renderHead} from '@ulibs/router'
+import { View, Row, Col, Container, Button, Table, TableHead,TableBody, TableCell, TableRow } from '@ulibs/components'
+import {tag} from '@ulibs/router'
+import { Sidebar, SidebarItem } from '../components/Sidebar.js'
 
-
-
-
-export default function({}){
-    return 'admin page'
-}
-
-const getPages= async() =>{
+export const load= async(reqResObj) =>{
     const ctx = pm.getContext()
     const DocsPages = ctx.db.getModel('docs_pages')
     const pages = await DocsPages.query(
@@ -19,11 +13,53 @@ const getPages= async() =>{
             }
         }
     )
-    return pages
+    reqResObj['pages'] = pages
 }
 
-export  const layout =  async ({content})=>{
-    const pages  = await getPages()
+
+export  default  function ({req, res, pages}){
+    return (
+      [
+        JSON.stringify(pages)
+        ,
+
+        View(
+            [
+                Button({color: 'primary'},'Add New Pages'),
+            ]
+        )
+        ,
+        Table(
+            [
+                
+                TableHead([
+                    TableCell('Title'),
+                    TableCell('SubTitles'),
+                    TableCell('Options')
+                ]),
+                TableBody([
+                    pages.data.map((page)=>TableRow(
+                        [
+                            TableCell(page.title),
+                            TableCell([View({tag: 'a', component: 'button' , bg:'primary', href: '/admin/docs/'+page.id},'View subTitles')]),
+                            TableCell(
+                                [
+                                    Button('Edit'),
+                                    Button({color: 'error'},'Delete'),
+                                    
+                                ]
+                            ),
+                        ]
+                        ),
+                    )
+                ]),
+            ]
+        )
+      ]
+    )
+}
+
+export const layout =   ({content})=>{
     return View(
         {
          
@@ -67,11 +103,7 @@ export  const layout =  async ({content})=>{
                             style: 'display: flex ; gap : 20px;align-items: center; padding-right: 1rem'
                         },
                         [
-                            pages.data.map(page=>{
-                                    return tag('a', {href: `/docs/${page.title}` ,style: 'line-type: node'}, page.title)
-                            }),
-                            tag('a', {href: `/admin/docs` ,style: 'line-type: node'}, 'Add New Page')
-
+                            tag('a', {href: `/admin/docs` ,style: 'line-type: node'}, 'Docs Page')
                         ]
                     )
 
@@ -79,10 +111,31 @@ export  const layout =  async ({content})=>{
             ),
             View(
                 [
-                    content
+                    View(
+                        [
+                            //list of subtitles
+                            Row(
+                                {},
+                                [
+                                    Col({col: 2}, [
+                                        Sidebar(
+                                            {}, 
+                                            [
+                                                    SidebarItem({}, [tag('a', {href: `/admin/docs`}, "Docs")])
+                                            ]
+                                        )
+                                    ]),
+                                    Col({col: 10}, [
+                                        content
+                                    ])
+                                    
+                                ]
+                            )
+                        ]
+                    )
                 ]
             )
         ]
-        )
+    )
 }
 

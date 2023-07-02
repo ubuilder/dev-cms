@@ -3,7 +3,6 @@ import { View, Row, Col, Container, Button, Table, TableHead,TableBody, TableCel
 import {tag} from '@ulibs/router'
 
 export const load= async(reqResObj) =>{
-    console.log('pagge id : ', reqResObj.req.params.subtitle)
     const ctx = pm.getContext()
     const ExamplePage = ctx.db.getModel('docs_examples')
     const examples = await ExamplePage.query(
@@ -21,7 +20,6 @@ export const load= async(reqResObj) =>{
             }
         }
     )
-    console.log('data: ', examples)
     reqResObj['examples'] = examples
 }
 

@@ -3,7 +3,6 @@ import { View, Row, Col, Container, Button, Table, TableHead,TableBody, TableCel
 import {tag} from '@ulibs/router'
 
 export const load= async(reqResObj) =>{
-    console.log('pagge id : ', reqResObj.req.params.page)
     const ctx = pm.getContext()
     const SubTitlePage = ctx.db.getModel('docs_subTitles')
     const subTitles = await SubTitlePage.query(
@@ -20,7 +19,6 @@ export const load= async(reqResObj) =>{
             }
         }
     )
-    console.log('data: ', subTitles)
     reqResObj['subTitles'] = subTitles
 }
 

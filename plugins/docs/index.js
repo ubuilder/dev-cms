@@ -1,3 +1,4 @@
+import {layout} from './layout.js'
 import * as page from './routes/index.js'
 //router
 import * as routerPage from './routes/router/index.js'
@@ -20,6 +21,7 @@ import * as examplePage from './adminRoutes/example/example.js'
 
 
 function onStart(ctx){
+    ctx.router.addPage('/', {layout: layout})
     console.log('starting docs plugin')
     ctx.router.addPage('/docs', page)
     //router

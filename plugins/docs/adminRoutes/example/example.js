@@ -4,7 +4,6 @@ import {tag} from '@ulibs/router'
 
 
 export const load= async(reqResObj) =>{
-    console.log('pagge id : ', reqResObj.req.params.exampleId)
     const ctx = pm.getContext()
     const ExamplePage = ctx.db.getModel('docs_examples')
     const example = await ExamplePage.query(
@@ -19,7 +18,6 @@ export const load= async(reqResObj) =>{
             }
         }
     )
-    console.log('data: ', example)
     reqResObj['example'] = example
 }
 

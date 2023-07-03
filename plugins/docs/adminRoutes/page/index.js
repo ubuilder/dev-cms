@@ -66,6 +66,14 @@ export  default function ({req, res, pages, pageAdded, pageDeleted}){
                   function closeCreatePageModal(){
                     document.getElementById('createPageModal').removeAttribute('u-modal-open')
                   }
+                  function openDeletePageModal(pageId){
+                    document.getElementById('deletePageModal').setAttribute('u-modal-open', 'true');
+                    document.getElementById('deletePageForm').setAttribute('action', '/admin/docs?action=deletePage&id='+pageId);
+                  }
+                  function closeDeletePageModal(){
+                    console.log('closing the modal')
+                    document.getElementById('deletePageModal').removeAttribute('u-modal-open')
+                  }
                   `
                 ),
                 Modal({id: 'createPageModal', size: 'xxs'}, [
@@ -90,6 +98,25 @@ export  default function ({req, res, pages, pageAdded, pageDeleted}){
                     ])   
                   ])
                 ]),
+
+                
+              
+                  Modal({id: 'deletePageModal', size: 'xxs'}, [
+                    ModalBody([
+                      Form({onsubmit: 'closeDeletePageModal()', id: 'deletePageForm',method:'post'}, [
+                        View({}, [
+                           View('Confirm Delete'),
+                           View([
+                               View('do you want to delete')
+                           ]),
+                           Row({p:'md'},[
+                            Button({color: 'error', size: 'lg', type: 'reset', onclick: 'closeDeletePageModal()'},'Cancel'),
+                            Button({color: 'primary', ms: 'auto', size: 'lg', type: 'submit',onclick: "closeDeletePageModal()"},'Yes'),
+                          ])
+                        ])
+                      ])   
+                    ])
+                  ])
             ]
         )
         ,
@@ -101,36 +128,7 @@ export  default function ({req, res, pages, pageAdded, pageDeleted}){
                     TableCell('Options')
                 ]),
                 TableBody([
-                  View({tag: 'script'}, 
-                  `
-                  function openDeletePageModal(pageId){
-                    document.getElementById('deletePageModal').setAttribute('u-modal-open', 'true')
-                    document.getElementById('deletePageform').setAttribute('action', '/admin/docs?action=deletePage&id='+pageId)
-                  }
-                  function closeDeletePageModal(){
-                    document.getElementById('deletePageModal').removeAttribute('u-modal-open')
-                  }
-                  `
-                  ),
-                  Modal({id: 'deletePageModal', size: 'xxs'}, [
-                    ModalBody([
-                      Form({onsubmit: 'closeDeletePageModal()', id:'deletePageform',method:'post'}, [
-                        View({}, [
-                           View('Confirm Delete'),
-                           View([
-                               View('do you want to delete')
-                           ]),
-                           Row({p:'md'},[
-                            Button({color: 'error', size: 'lg', type: 'reset', onclick: 'closeDeletePageModal()'},'Cancel'),
-                            Button({color: 'primary', ms: 'auto', size: 'lg', type: 'submit',},'Yes'),
-                          ])
-                        ])
-                      ])   
-                    ])
-                  ])
-  
-                  ,
-
+                  
                     pages.data.map((page)=>TableRow(
                         [
                             TableCell(page.title),

@@ -8,14 +8,11 @@ export const load= async(reqResObj) =>{
     const subTitles = await SubTitlePage.query(
         {
             where: {
-                page : {
-                    id: reqResObj.req.params.page
-                }
+                page_id : reqResObj.req.params.page
             },
             select: {
                 title: true,
                 page: true
-
             }
         }
     )
